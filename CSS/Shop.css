@@ -1,0 +1,139 @@
+body {
+	font-family: Arial, sans-serif;
+	background-image: url('../Pictures/00678a.png');
+	margin: 0;
+	padding: 0;
+}
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 2vh; 
+    text-align: center;
+    font-size: 1.0vw; 
+}
+nav {
+    background-color: #444;
+    padding: 1vh 0; 
+    text-align: center;
+	font-size: 1.0vw;
+}
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 2vh 2vw; 
+    font-size: 1.0vw; 
+}
+nav a:hover {
+    text-decoration: underline;
+}
+.main-content {
+	padding: 2vw;
+	text-align: center;
+	margin-bottom: 4vh;
+}
+footer {
+	background-color: #333;
+	color: #fff;
+	padding: 1vh;
+	text-align: center;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	height: 4vh;
+	display: flex;
+    align-items: center; 
+	justify-content: center; 
+	font-size: 1.2vw; 
+}
+.product-container {
+	width: 90%;
+	margin: 0 0 0 10%;
+}
+
+.product {
+	display: inline-block;
+	background-color: white;
+	border: 0.1vw solid #ddd;
+	padding: 1%;
+	margin: 1%;
+	width: 20%;
+	font-size: 0.8vw;
+}
+.product h3 {
+	height: 6vh;
+}
+.product img {
+	width: 100%;
+	object-fit: cover;
+}
+.add-product-button {
+    font-size: 0.8vw; 
+	padding: 0.1vw;
+	border: 0.1vw solid;
+}
+#cart {
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #fff;
+    border: 0.5vw solid #ddd; 
+    padding: 1.0vw; 
+    cursor: pointer;
+    z-index: 1;
+    font-size: 1.0vw; 
+}
+
+#cart-items {
+    display: none;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    position: fixed;
+    top: 8vh; 
+    right: 0;
+    background-color: #fff;
+    border: 0.5vw solid #ddd; 
+    padding: 0.5vw; 
+	font-size: 0.8vw; 
+}
+
+#cart-items li {
+	display: flex;
+    padding: 2vh; 
+    border-bottom: 0.1vh solid #ddd;
+	justify-content: space-between;
+}
+
+#cart-items li:last-child {
+    border-bottom: none;
+}
+
+#cart-items li button {
+	margin-left: 1vw;
+    font-size: 0.8vw; 
+	padding: 0.1vw;
+	border: 0.1vw solid;
+}
+#submenu {
+	position: fixed;
+	top: 50%;
+	left: 0;
+	transform: translateY(-50%);
+	background-color: #333;
+	color: #fff;
+	z-index: 1;
+	width: 10%;
+}
+#submenu button {
+	display: block;
+	background-color: transparent;
+	color: #fff;
+	border: none;
+	padding: 1vw;
+	height: 10vh;
+	cursor: pointer;
+	font-size: 1.2vw; 
+}
+#submenu button:hover {
+	background-color: #444;
+}

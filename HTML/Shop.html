@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Sports Equipment Store</title>
+    <link rel="stylesheet" href="../CSS/Shop.css">
+</head>
+<body>
+    <header>
+        <h1>Продукти</h1>
+    </header>
+    <nav>
+        <a href="index.html">Начало</a>
+        <a href="shop.html">Продукти</a>
+		<a href="promo.html">Промоции</a>
+        <a href="about us.html">За нас</a>
+        <a href="contact.html">Контакти</a>
+    </nav>
+	<div id="submenu">
+        <button onclick="filterProducts('all')">Всичко</button>
+        <button onclick="filterProducts('Обувки')">Обувки</button>
+        <button onclick="filterProducts('Горнища')">Горнища</button>
+        <button onclick="filterProducts('Долнища')">Долнища</button>
+		<button onclick="filterProducts('Аксесоари')">Аксесоари</button>
+    </div>
+    <button id="cart" onclick="toggleCart()">Количка</button>
+    <ul id="cart-items">
+     
+    </ul>
+	<div class="main-content">
+        <div class="product-container" id="product-container">
+    
+        </div>
+    </div>
+    <footer>
+         <p>&copy; 2024 Димитър Борисов 12в Пгеа </p>
+    </footer>
+
+    <script>
+		const products = [
+            { name: 'Обувки За Бягане Nike Usa Nike Waffle Nav White Black Phantom Summit White', category: 'Обувки', price: 149.99, image: '../Pictures/Products/ob1.jpeg' },
+            { name: 'Обувки За Бягане Nike Usa Nike Revolution 7 Wide Black White', category: 'Обувки', price: 139.99, image: '../Pictures/Products/ob2.jpeg' },
+            { name: 'Градски Обувки Nike Usa Team Hustle D 11 (Gs) Hyper Royal White Obsidian White', category: 'Обувки', price: 135.99, image: '../Pictures/Products/ob3.jpeg' },
+            { name: 'Обувки За Бягане Nike Usa Nike Revolution 7 Black White ', category: 'Обувки', price: 145.99, image: '../Pictures/Products/ob4.jpeg' },
+            { name: 'Градски Обувки Nike Usa Team Hustle D 11 (Ps) Black White', category: 'Обувки', price: 129.99, image: '../Pictures/Products/ob5.jpeg' },
+            { name: 'Баскетболни Обувки Nike Usa Air Monarch Iv White Black', category: 'Обувки', price: 179.99, image: '../Pictures/Products/ob6.jpeg' },
+            { name: 'Дамски Обувки За Бягане Nike Usa Wmns Nike Tanjun Flyease Black White Volt Black', category: 'Обувки', price: 165.99, image: '../Pictures/Products/ob7.jpeg' },
+            { name: 'Дамски Обувки За Фитнес Nike Usa W Nike Free Metcon 5 White Aquarius Blue', category: 'Обувки', price: 199.99, image: '../Pictures/Products/ob8.jpeg' },
+            { name: 'Спортно Горнище Adidas Adicolor Classics Trefoil Track Top Reg Fit Black', category: 'Горнища', price: 99.99, image: '../Pictures/Products/go1.jpeg' },
+            { name: 'Мъжки Суитшърт Nike Dri-Fit Standard Issue Men Pullover Basketball Hoodie', category: 'Горнища', price: 79.99, image: '../Pictures/Products/go2.jpeg' },
+            { name: 'Панталон La Sportiva Instant Pant M Black/Cloud', category: 'Горнища', price: 89.99, image: '../Pictures/Products/go3.jpeg' },
+            { name: 'Панталон Wilson M Team Woven Pant Bk', category: 'Горнища', price: 89.99, image: '../Pictures/Products/go4.jpeg' },
+			{ name: 'Спортно Горнище Nike Lal M Nk Flc Po Essntl Gx 504', category: 'Горнища', price: 69.99, image: '../Pictures/Products/go5.jpeg' },
+            { name: 'Панталон Under Armour Ua Baseline Fleece', category: 'Горнища', price: 65.99, image: '../Pictures/Products/go6.jpeg' },
+            { name: 'Спортно Горнище Nike M Nsw Club Hoodie Fz Bb', category: 'Горнища', price: 115.99, image: '../Pictures/Products/go7.jpeg' },
+            { name: 'Спортно Горнище Wilson Team Ii Fz Hoody Black', category: 'Горнища', price: 99.99, image: '../Pictures/Products/go8.jpeg' },
+            { name: 'Панталон Peak Performance M Light Cargo Pants-Pine Needle', category: 'Долнища', price: 75.99, image: '../Pictures/Products/do1.jpeg' },
+            { name: 'Панталон Salomon Wayfarer Pants M Deep Black', category: 'Долнища', price: 80.99, image: '../Pictures/Products/do2.jpeg' },
+            { name: 'Мъжки Туристически Софтшел Панталон La Sportiva Aequilibrium Softshell Pant M Storm Blue', category: 'Долнища', price: 69.99, image: '../Pictures/Products/do3.jpeg' },
+            { name: 'Панталон Peak Performance M Original Pants-Med Grey Melange', category: 'Долнища', price: 65.99, image: '../Pictures/Products/do4.jpeg' },
+            { name: 'Панталон Northfinder M Horace Pant Black', category: 'Долнища', price: 69.99, image: '../Pictures/Products/do5.jpeg' },
+            { name: 'Панталон Peak Performance M Original Pants-Black', category: 'Долнища', price: 89.99, image: '../Pictures/Products/do6.jpeg' },
+            { name: 'Панталон Reebok Pantalon De Jogging Man Black', category: 'Долнища', price: 79.99, image: '../Pictures/Products/do7.jpeg' },
+            { name: 'Панталон La Sportiva Pueblo Pant M Deep Sea', category: 'Долнища', price: 69.99, image: '../Pictures/Products/do8.jpeg' },
+			{ name: 'Раница Kathmandu Hybrid Trolley V3 32L O4W Black Sting', category: 'Аксесоари', price: 49.99, image: '../Pictures/Products/ak1.jpeg' },
+            { name: 'Раница Salomon Trailblazer 30 Black/Alloy', category: 'Аксесоари', price: 39.99, image: '../Pictures/Products/ak2.jpeg' },
+            { name: 'Раница Adidas Motion Lin Gfx Black/Multco', category: 'Аксесоари', price: 35.99, image: '../Pictures/Products/ak3.jpeg' },
+            { name: 'Раница Adidas Linear Gymsack Black/White', category: 'Аксесоари', price: 15.99, image: '../Pictures/Products/ak4.jpeg' },
+            { name: 'Раница Wilson Lifestyle Backpack 2024', category: 'Аксесоари', price: 99.99, image: '../Pictures/Products/ak5.jpeg' },
+            { name: 'Предпазни футболни кори King Strap PUMA', category: 'Аксесоари', price: 29.99, image: '../Pictures/Products/ak6.jpeg' },
+            { name: 'Предпазни футболни кори ATTACANTO', category: 'Аксесоари', price: 29.99, image: '../Pictures/Products/ak7.jpeg' },
+            { name: 'Зимна шапка New Era Bonnet NBA Memphis', category: 'Аксесоари', price: 15.99, image: '../Pictures/Products/ak8.jpeg' },
+        ];
+
+        function renderProducts(category) {
+            const productContainer = document.getElementById('product-container');
+            productContainer.innerHTML = '';
+
+            products.forEach(product => {
+                if (category === 'all' || product.category === category) {
+                    const productDiv = document.createElement('div');
+                    productDiv.classList.add('product');
+
+                    const img = document.createElement('img');
+                    img.src = product.image;
+                    img.alt = product.name;
+
+                    const name = document.createElement('h3');
+                    name.textContent = product.name;
+
+                    const price = document.createElement('p');
+                    price.textContent = `${product.price.toFixed(2)} лв.`;
+
+                    const addToCartButton = document.createElement('button');
+					addToCartButton.classList.add('add-product-button');
+                    addToCartButton.textContent = 'Добави';
+                    addToCartButton.onclick = function() {
+                        addToCart(product.name, product.price);
+                    };
+
+                    productDiv.appendChild(img);
+                    productDiv.appendChild(name);
+                    productDiv.appendChild(price);
+                    productDiv.appendChild(addToCartButton);
+
+                    productContainer.appendChild(productDiv);
+                }
+            });
+        }
+
+        function filterProducts(category) {
+            renderProducts(category);
+        }
+
+     
+        renderProducts('all');
+	
+        let cartItems = [];
+        let cartVisible = false;
+		
+		window.onload = function() {
+            const savedCartItems = localStorage.getItem('cartItems');
+            if (savedCartItems) {
+                cartItems = JSON.parse(savedCartItems);
+                updateCartDisplay();
+            }
+        };
+
+        function addToCart(productName, price) {
+
+            const existingItem = cartItems.find(item => item.name === productName);
+
+            if (existingItem) {
+			
+                existingItem.quantity++;
+            } else {
+                cartItems.push({ name: productName, price: price, quantity: 1 });
+            }
+
+            updateCartDisplay();
+			
+			localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        }
+
+        function removeFromCart(productName) {
+         
+            cartItems = cartItems.filter(item => item.name !== productName);
+            updateCartDisplay();
+			
+			localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        }
+
+        function decreaseQuantity(productName) {
+            const existingItem = cartItems.find(item => item.name === productName);
+
+            if (existingItem) {
+ 
+                existingItem.quantity--;
+
+
+                if (existingItem.quantity === 0) {
+                    removeFromCart(productName);
+                }
+            }
+
+            updateCartDisplay();
+			
+			localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        }
+
+        function updateCartDisplay() {
+            const cartItemsList = document.getElementById('cart-items');
+            cartItemsList.innerHTML = '';
+
+            let totalPrice = 0;
+
+            cartItems.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${item.name} - Количество: ${item.quantity} - ${item.price * item.quantity} лв.`;
+
+                const decreaseButton = document.createElement('button');
+                decreaseButton.textContent = 'Премахни';
+                decreaseButton.onclick = function() {
+                    decreaseQuantity(item.name);
+                };
+
+                listItem.appendChild(decreaseButton);
+                cartItemsList.appendChild(listItem);
+
+                totalPrice += item.price * item.quantity;
+            });
+
+            const totalElement = document.createElement('li');
+            totalElement.textContent = `Общо: ${totalPrice.toFixed(2)} лв.`;
+            cartItemsList.appendChild(totalElement);
+        }
+
+        function toggleCart() {
+            const cartItemsList = document.getElementById('cart-items');
+            cartVisible = !cartVisible;
+            cartItemsList.style.display = cartVisible ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Sports Equipment Store</title>
+    <link rel="stylesheet" href="../CSS/Promo.css">
+</head>
+<body>
+    <header>
+        <h1>Промоции</h1>
+    </header>
+    <nav>
+        <a href="index.html">Начало</a>
+        <a href="shop.html">Продукти</a>
+		<a href="promo.html">Промоции</a>
+        <a href="about us.html">За нас</a>
+        <a href="contact.html">Контакти</a>
+    </nav>
+	<div id="submenu">
+         <button onclick="filterProducts('all')">Всичкo</button>
+        <button onclick="filterProducts('Обувки')">Обувки</button>
+        <button onclick="filterProducts('Горнища')">Горнища</button>
+        <button onclick="filterProducts('Долнища')">Долнища</button>
+		<button onclick="filterProducts('Аксесоари')">Аксесоари</button>
+    </div>
+    <button id="cart" onclick="toggleCart()">Количка</button>
+    <ul id="cart-items">
+
+    </ul>
+	<div class="main-content">
+        <div class="product-container" id="product-container">
+    
+        </div>
+    </div>
+    <footer>
+         <p>&copy; 2024 Димитър Борисов 12в Пгеа </p>
+    </footer>
+
+    <script>
+		const products = [
+            { name: 'Име на продукта', category: 'Обувки', price: 99.99, dashedPrice: 179.99, image: '../Pictures/Products/ob11.jpeg' },
+            { name: 'Мъжки Трисезонни Туристически Обувки La Sportiva Tx4 Evo Mid Gtx Gore', category: 'Обувки', price: 89.99, dashedPrice: 139.99, image: '../Pictures/Products/ob12.jpeg' },
+            { name: 'Мъжко спортно горнище суитшърт худи Adidas Adventure Hoodie Beige', category: 'Горнища', price: 69.99, dashedPrice: 99.99, image: '../Pictures/Products/go11.jpeg' },
+            { name: 'Спортно Горнище Salomon Runlife Hoodie M Ash', category: 'Горнища', price: 79.99, dashedPrice: 119.99, image: '../Pictures/Products/go12.jpeg' },
+            { name: 'Панталон Superdry Training Core Sport', category: 'Долнища', price: 59.99, dashedPrice: 89.99, image: '../Pictures/Products/do11.jpeg' },
+            { name: 'Панталон Salomon Outspeed Pants M Black', category: 'Долнища', price: 49.99, dashedPrice: 79.99, image: '../Pictures/Products/do12.jpeg' },
+            { name: 'Тенис Раница Wilson Us Open Tour Backpack', category: 'Аксесоари', price: 69.99, dashedPrice: 79.99, image: '../Pictures/Products/ak11.jpeg' },
+            { name: 'Раница Rip Curl M F-Light Ultra 30L Midnight Midnight', category: 'Аксесоари', price: 65.99, dashedPrice: 99.99, image: '../Pictures/Products/ak12.jpeg' },
+
+        ];
+
+        function renderProducts(category) {
+            const productContainer = document.getElementById('product-container');
+            productContainer.innerHTML = '';
+
+            products.forEach(product => {
+                if (category === 'all' || product.category === category) {
+                    const productDiv = document.createElement('div');
+                    productDiv.classList.add('product');
+
+                    const img = document.createElement('img');
+                    img.src = product.image;
+                    img.alt = product.name;
+
+                    const name = document.createElement('h3');
+                    name.textContent = product.name;
+
+                    const price = document.createElement('p');
+                    price.textContent = `${product.price.toFixed(2)} лв.`;
+					
+					
+					const dashedPrice = document.createElement('span');
+					dashedPrice.textContent = `${(product.dashedPrice * 1.0).toFixed(2)} лв.`; 
+
+                    const addToCartButton = document.createElement('button');
+					addToCartButton.classList.add('add-product-button');
+                    addToCartButton.textContent = 'Добави';
+                    addToCartButton.onclick = function() {
+                        addToCart(product.name, product.price);
+                    };
+
+                    productDiv.appendChild(img);
+                    productDiv.appendChild(name);
+					productDiv.appendChild(dashedPrice);
+                    productDiv.appendChild(price);
+                    productDiv.appendChild(addToCartButton);
+
+                    productContainer.appendChild(productDiv);
+                }
+            });
+        }
+
+        function filterProducts(category) {
+            renderProducts(category);
+        }
+
+       
+        renderProducts('all');
+	
+        let cartItems = [];
+        let cartVisible = false;
+		
+		window.onload = function() {
+            const savedCartItems = localStorage.getItem('cartItems');
+            if (savedCartItems) {
+                cartItems = JSON.parse(savedCartItems);
+                updateCartDisplay();
+            }
+        };
+
+        function addToCart(productName, price) {
+            
+            const existingItem = cartItems.find(item => item.name === productName);
+
+            if (existingItem) {
+               
+                existingItem.quantity++;
+            } else {
+              
+                cartItems.push({ name: productName, price: price, quantity: 1 });
+            }
+
+            updateCartDisplay();
+			
+			localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        }
+
+        function removeFromCart(productName) {
+     
+            cartItems = cartItems.filter(item => item.name !== productName);
+            updateCartDisplay();
+			
+			localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        }
+
+        function decreaseQuantity(productName) {
+            const existingItem = cartItems.find(item => item.name === productName);
+
+            if (existingItem) {
+           
+                existingItem.quantity--;
+
+            
+                if (existingItem.quantity === 0) {
+                    removeFromCart(productName);
+                }
+            }
+
+            updateCartDisplay();
+			
+			localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        }
+
+        function updateCartDisplay() {
+            const cartItemsList = document.getElementById('cart-items');
+            cartItemsList.innerHTML = '';
+
+            let totalPrice = 0;
+
+            cartItems.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${item.name} - Количество: ${item.quantity} - ${item.price * item.quantity} лв.`;
+
+                const decreaseButton = document.createElement('button');
+                decreaseButton.textContent = 'Премахни';
+                decreaseButton.onclick = function() {
+                    decreaseQuantity(item.name);
+                };
+
+                listItem.appendChild(decreaseButton);
+                cartItemsList.appendChild(listItem);
+
+                totalPrice += item.price * item.quantity;
+            });
+
+            const totalElement = document.createElement('li');
+            totalElement.textContent = `Общо: ${totalPrice.toFixed(2)} лв.`;
+            cartItemsList.appendChild(totalElement);
+        }
+
+        function toggleCart() {
+            const cartItemsList = document.getElementById('cart-items');
+            cartVisible = !cartVisible;
+            cartItemsList.style.display = cartVisible ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
